@@ -22,6 +22,272 @@
           "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
         }
       ]
+    },
+    {
+      "name": "Crabulon",
+      "insertAfter": "Eye of Cthulhu",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Hive Mind / Perforators",
+      "insertAfter": "Evil Boss",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Slime God",
+      "insertAfter": "Skeletron",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Hard Mode",
+      "clearPreviousWeapons": true,
+      "calamityOnly": false,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Cryogen",
+      "insertAfter": "Queen Slime",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Aquatic Scourge",
+      "insertAfter": "Mech Bosses",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Brimstone Elemental",
+      "insertAfter": "Aquatic Scourge",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Calamitas Clone",
+      "insertAfter": "Brimstone Elemental",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Leviathan",
+      "insertAfter": "Plantera",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Astrum Aureus",
+      "insertAfter": "Leviathan",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Plaguebringer Goliath",
+      "insertAfter": "Duke Fishron",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Ravager",
+      "insertAfter": "Empress of Light",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Astrum Deus",
+      "insertAfter": "Cultist",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Post Moon Lord",
+      "insertAfter": "Moon Lord",
+      "clearPreviousWeapons": true,
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Profaned Guardians",
+      "insertAfter": "Post Moon Lord",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+        {
+      "name": "Dragonfolly",
+      "insertAfter": "Profaned Guardians",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Providence",
+      "insertAfter": "Dragonfolly",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Rune of Kos Bosses",
+      "insertAfter": "Providence",
+      "clearPreviousWeapons": true,
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Polterghast",
+      "insertAfter": "Rune of Kos Bosses",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "The Old Duke",
+      "insertAfter": "Polterghast",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Devourer of Gods",
+      "insertAfter": "The Old Duke",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Yharon",
+      "insertAfter": "Devourer of Gods",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Exo Mechs / Supreme Calamitas",
+      "insertAfter": "Yharon",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Primordial Wyrm",
+      "insertAfter": "Exo Mechs / Supreme Calamitas",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
     }
   ]
 }
