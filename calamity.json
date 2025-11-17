@@ -9,6 +9,14 @@
         {
           "name": "Basher",
           "img": "https://calamitymod.wiki.gg/images/Basher.png?c99167"
+        },
+        {
+          "name": "Yatveo Bloom",
+          "img": "https://calamitymod.wiki.gg/images/6/61/Yateveo_Bloom.png?f31991"
+        },
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
         }
       ]
     },
@@ -40,8 +48,8 @@
       "calamityOnly": true,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Wind Blade",
+          "img": "https://calamitymod.wiki.gg/images/c/c4/Wind_Blade.png?6c6935"
         }
       ]
     },
@@ -62,8 +70,8 @@
       "calamityOnly": false,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Yin-Yo",
+          "img": "https://calamitymod.wiki.gg/images/5/58/Yin-Yo.png?add9fe"
         }
       ]
     },
@@ -119,6 +127,19 @@
         {
           "name": "Wulfrum Screwdriver",
           "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
+    },
+    {
+      "name": "Post Golem (Calamity)",
+      "insertAfter": "Golem",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Vulcanite Lance",
+          "img": "https://calamitymod.wiki.gg/images/Vulcanite_Lance.png?d06edd"
+        },
+        {
         }
       ]
     },
