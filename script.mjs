@@ -1,4 +1,3 @@
-
 const TRW_VERSION = '0.0.1';
 
 import { DynamicElement } from './percentTemplate.mjs';
@@ -8,6 +7,7 @@ import { statePotentialUpdate } from './updateCode.mjs';
  * @typedef WeaponData
  * @property {String} name
  * @property {String} img
+ * @property {String} [mod]
  */
 
 let data = {};
@@ -24,7 +24,9 @@ function stateReset() {
     selectedWeapon: null,
     enableStageClearPreviousWeapons: true,
     sortWeapons: 'availabilityAndName',
-    openWeaponList: false
+    openWeaponList: false,
+    //mod mode: 'vanilla' | 'calamity' | 'both'
+    modMode: 'vanilla'
   };
   return rstState;
 }
@@ -33,6 +35,18 @@ let state = stateReset();
 
 function toggleStageClear() {
   state.enableStageClearPreviousWeapons = !state.enableStageClearPreviousWeapons;
+  stateChanged();
+}
+
+/** vanilla -> calamity -> both -> vanilla */
+function toggleModMode() {
+  if (state.modMode === 'vanilla') {
+    state.modMode = 'calamity';
+  } else if (state.modMode === 'calamity') {
+    state.modMode = 'both';
+  } else {
+    state.modMode = 'vanilla';
+  }
   stateChanged();
 }
 
@@ -45,6 +59,7 @@ const currentStage = new DynamicElement();
 const availWeapons = new DynamicElement();
 const optWeaponList = new DynamicElement();
 const optStageClear = new DynamicElement();
+const optModMode = new DynamicElement();
 
 const randomWeaponPrompt = Object.assign(
   new DynamicElement(null, {}, true),
@@ -98,9 +113,10 @@ const SORTMODES = {
  * Gets all available weapons at the specified stage with the specified blacklist
  * @param {Number} [stageI] - The stage's index
  * @param {Object<String, Boolean>} [blacklist] - The weapons' blacklist
+ * @param {String} [modMode] - 'vanilla' | 'calamity' | 'both' (defaults to state.modMode)
  * @returns {WeaponData[]} An array that contains all available weapons
  */
-function getAvailableWeapons(stageI = 0, blacklist = state.weaponBlacklist) {
+function getAvailableWeapons(stageI = 0, blacklist = state.weaponBlacklist, modMode = state.modMode) {
   let weapons = [];
   /** @type {String[]} */
   const stages = data.stages;
@@ -111,7 +127,17 @@ function getAvailableWeapons(stageI = 0, blacklist = state.weaponBlacklist) {
     }
     weapons.push(...stages[i].weapons);
   }
-  return weapons.filter(w => !blacklist[w.name]);
+
+  // Filter by modMode:
+  const filteredByMod = weapons.filter(w => {
+    const mod = (w.mod || 'vanilla').toLowerCase();
+    if (modMode === 'both') return true;
+    if (modMode === 'vanilla') return mod === 'vanilla';
+    if (modMode === 'calamity') return mod === 'calamity';
+    return true;
+  });
+
+  return filteredByMod.filter(w => !blacklist[w.name]);
 }
 
 /**
@@ -125,12 +151,16 @@ function getStageName(stageI = 0) {
 
 /**
  * Picks a random weapon that is available at the specified stage with the specified blacklist
+ * honors state.modMode via getAvailableWeapons default parameter
  * @param {Number} [stageI] - The stage's index
  * @param {Object<String, Boolean>} [blacklist] - The weapons' blacklist
  * @returns {WeaponData} The name of a randomly picked weapon
  */
 function pickRandomWeapon(stageI = 0, blacklist = state.weaponBlacklist) {
-  const availWeapons = getAvailableWeapons(stageI, blacklist);
+  const availWeapons = getAvailableWeapons(stageI, blacklist, state.modMode);
+  if (!availWeapons || availWeapons.length === 0) {
+    return undefined;
+  }
   return availWeapons[Math.floor(Math.random() * availWeapons.length)];
 }
 
@@ -191,7 +221,7 @@ function populateWeaponList() {
     weaponList.element.removeChild(weaponList.element.lastElementChild);
   }
 
-  const allWeapons = getAvailableWeapons(state.currentStage, { });
+  const allWeapons = getAvailableWeapons(state.currentStage, { }, state.modMode); // pass modMode
   allWeapons.sort(SORTMODES[state.sortWeapons].cmpFn);
   for (const weapon of allWeapons) {
     const name = weapon.name;
@@ -225,9 +255,10 @@ function populateWeaponList() {
 function updateElements() {
   currentStage.update({ CURRENT_STAGE: `${getStageName(state.currentStage)} (${state.currentStage + 1}/${data.stages.length})` });
   selectedWeapon.update({ CURRENT_WEAPON: createWeaponHTML(state.selectedWeapon) });
-  availWeapons.update({ WEAPON_COUNT: getAvailableWeapons(state.currentStage, state.weaponBlacklist).length });
+  availWeapons.update({ WEAPON_COUNT: getAvailableWeapons(state.currentStage, state.weaponBlacklist, state.modMode).length });
   optWeaponList.update({ ACTION: state.openWeaponList ? "Close" : "Open" });
   optStageClear.update({ ACTION: state.enableStageClearPreviousWeapons ? "Disable" : "Enable" });
+  optModMode.update({ MOD_ACTION: state.modMode }); // show current mode (vanilla|calamity|both)
 
   populateWeaponList();
 }
@@ -248,7 +279,7 @@ function toggleWeaponList() {
 function confirmRandomWeapon(accept = true, addToBlacklist = true) {
   randomWeaponPrompt.parent.classList.add("hidden");
   state.selectedWeapon = accept ? randomWeaponPrompt.current : null;
-  if (addToBlacklist) {
+  if (addToBlacklist && randomWeaponPrompt.current) {
     state.weaponBlacklist[randomWeaponPrompt.current.name] = true;
   }
   stateChanged();
@@ -329,6 +360,7 @@ window.addEventListener("load", async () => {
   weaponList.element = document.getElementById("weaponList");
   optWeaponList.element = document.getElementById("optWeaponList");
   optStageClear.element = document.getElementById("optStageClear");
+  optModMode.element = document.getElementById("optModMode");
 
   data = await (await fetch("data.json")).json();
 
@@ -341,17 +373,6 @@ window.addEventListener("load", async () => {
     }
   );
 
-  /*
-  document.body.onbeforeunload = (ev) => {
-    // Show unsaved state
-    if (isDirty) {
-      ev.preventDefault();
-      ev.returnValue = '';
-      return '';
-    }
-  };
-  */
-
   loadFromLocal();
 
   // Exported functions for the page
@@ -361,6 +382,7 @@ window.addEventListener("load", async () => {
     previousStage,
     toggleWeaponList,
     toggleStageClear,
+    toggleModMode,
     confirmRandomWeapon,
     saveToFile,
     loadFromFile,
