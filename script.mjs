@@ -119,25 +119,28 @@ const SORTMODES = {
 function getAvailableWeapons(stageI = 0, blacklist = state.weaponBlacklist, modMode = state.modMode) {
   let weapons = [];
   /** @type {String[]} */
-  const stages = data.stages;
-  stageI = Math.min(Math.max(stageI, 0), stages.length);
+  const stages = data.stages || [];
+  const maxIndex = Math.max(0, stages.length - 1);
+  stageI = Math.min(Math.max(stageI, 0), maxIndex);
   for (let i = 0; i <= stageI; i++) {
-    if (state.enableStageClearPreviousWeapons && stages[i].clearPreviousWeapons) {
+    if (state.enableStageClearPreviousWeapons && stages[i] && stages[i].clearPreviousWeapons) {
       weapons = [];
     }
-    weapons.push(...stages[i].weapons);
+    if (stages[i] && Array.isArray(stages[i].weapons)) {
+      weapons.push(...stages[i].weapons);
+    }
   }
 
   // Filter by modMode:
   const filteredByMod = weapons.filter(w => {
-    const mod = (w.mod || 'vanilla').toLowerCase();
+    const mod = (w && (w.mod || 'vanilla')).toString().toLowerCase();
     if (modMode === 'both') return true;
     if (modMode === 'vanilla') return mod === 'vanilla';
     if (modMode === 'calamity') return mod === 'calamity';
     return true;
   });
 
-  return filteredByMod.filter(w => !blacklist[w.name]);
+  return filteredByMod.filter(w => w && !blacklist[w.name]);
 }
 
 /**
@@ -224,11 +227,14 @@ function populateWeaponList() {
   const allWeapons = getAvailableWeapons(state.currentStage, { }, state.modMode); // pass modMode
   allWeapons.sort(SORTMODES[state.sortWeapons].cmpFn);
   for (const weapon of allWeapons) {
-    const name = weapon.name;
+    if (!weapon) continue;
+    const name = weapon.name || "Unknown";
     const div = document.createElement("div");
 
+    const safeId = `blacklistButton_${name.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+
     const button = document.createElement("button");
-    button.id = `blacklistButton_${name}`;
+    button.id = safeId;
     button.classList.add("defaultButton", "weaponListButton", "left");
     button.innerText = state.weaponBlacklist[name] ? "W" : "B";
 
