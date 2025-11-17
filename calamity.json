@@ -1,0 +1,16 @@
+{
+  "$meta": {
+    "author": "ziograth"
+  },
+  "stages": [
+    {
+      "name": "Pre Hardmode",
+      "weapons": [
+        {
+          "name": "Basher",
+          "img": "https://calamitymod.wiki.gg/images/Basher.png?c99167"
+        }
+      ]
+    }
+  ]
+}

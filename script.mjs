@@ -368,7 +368,37 @@ window.addEventListener("load", async () => {
   optStageClear.element = document.getElementById("optStageClear");
   optModMode.element = document.getElementById("optModMode");
 
-  data = await (await fetch("data.json")).json();
+  // load base data
+  const base = await (await fetch("data.json")).json();
+
+  // try to load calamity.json (optional). If present, merge weapons into base stages
+  let calamityData = null;
+  try {
+    // attempt to fetch calamity.json
+    calamityData = await (await fetch("calamity.json")).json();
+  } catch (e) {
+    // calamity.json failed to load; continue with vanilla only
+    calamityData = null;
+  }
+
+  if (calamityData && Array.isArray(calamityData.stages)) {
+    for (const cStage of calamityData.stages) {
+      const cWeapons = (Array.isArray(cStage.weapons) ? cStage.weapons : []).map(w => Object.assign({}, w, { mod: 'calamity' }));
+      // find matching stage by name in base
+      const idx = base.stages.findIndex(s => s.name === cStage.name);
+      if (idx >= 0) {
+        base.stages[idx].weapons = base.stages[idx].weapons.concat(cWeapons);
+      } else {
+        // add a new stage (Calamity-provided) to the end
+        base.stages.push({
+          name: cStage.name,
+          weapons: cWeapons
+        });
+      }
+    }
+  }
+
+  data = base;
 
   new DynamicElement(
     document.getElementById("credits"),
