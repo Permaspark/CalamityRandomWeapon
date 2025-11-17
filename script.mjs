@@ -10,6 +10,7 @@ import { statePotentialUpdate } from './updateCode.mjs';
  * @property {String} [mod]
  */
 
+/** Contains merged data from data.json (+ calamity.json optionally) */
 let data = {};
 
 /**
@@ -19,13 +20,13 @@ function stateReset() {
   const rstState = {
     terrariaVersion: data.terrariaVersion,
     trwVersion: TRW_VERSION,
-    currentStage: 0,
+    currentStage: 0, // index into "visible" stages
     weaponBlacklist: {},
     selectedWeapon: null,
     enableStageClearPreviousWeapons: true,
     sortWeapons: 'availabilityAndName',
     openWeaponList: false,
-    //mod mode: 'vanilla' | 'calamity' | 'both'
+    // 'vanilla' | 'calamity' | 'both'
     modMode: 'vanilla'
   };
   return rstState;
@@ -47,6 +48,9 @@ function toggleModMode() {
   } else {
     state.modMode = 'vanilla';
   }
+
+  // clamp currentStage to visible stages after mode change
+  clampCurrentStage();
   stateChanged();
 }
 
@@ -109,19 +113,45 @@ const SORTMODES = {
   }
 };
 
+/** Returns array of stages visible for current mode (or specified mode) */
+function getVisibleStages(modMode = state.modMode) {
+  const stages = Array.isArray(data.stages) ? data.stages : [];
+  // If in vanilla mode, hide any stage that was marked calamityOnly
+  if (modMode === 'vanilla') {
+    return stages.filter(s => !s._calamityOnly);
+  }
+  // in 'calamity' and 'both' we show all stages (weapons are still filtered by mod mode)
+  return stages;
+}
+
 /**
- * Gets all available weapons at the specified stage with the specified blacklist
- * @param {Number} [stageI] - The stage's index
+ * Ensure state.currentStage is a valid index into the currently visible stages
+ */
+function clampCurrentStage() {
+  const vis = getVisibleStages(state.modMode);
+  if (!Array.isArray(vis) || vis.length === 0) {
+    state.currentStage = 0;
+    return;
+  }
+  if (typeof state.currentStage !== 'number' || !Number.isFinite(state.currentStage)) {
+    state.currentStage = 0;
+  }
+  state.currentStage = Math.min(Math.max(Math.floor(state.currentStage), 0), vis.length - 1);
+}
+
+/**
+ * Gets all available weapons at the specified visible-stage index with the specified blacklist
+ * @param {Number} [stageI] - The visible stage's index
  * @param {Object<String, Boolean>} [blacklist] - The weapons' blacklist
  * @param {String} [modMode] - 'vanilla' | 'calamity' | 'both' (defaults to state.modMode)
  * @returns {WeaponData[]} An array that contains all available weapons
  */
 function getAvailableWeapons(stageI = 0, blacklist = state.weaponBlacklist, modMode = state.modMode) {
   let weapons = [];
-  /** @type {String[]} */
-  const stages = data.stages || [];
-  const maxIndex = Math.max(0, stages.length - 1);
-  stageI = Math.min(Math.max(stageI, 0), maxIndex);
+  const stages = getVisibleStages(modMode);
+  if (!Array.isArray(stages) || stages.length === 0) return [];
+
+  stageI = Math.min(Math.max(stageI, 0), stages.length - 1);
   for (let i = 0; i <= stageI; i++) {
     if (state.enableStageClearPreviousWeapons && stages[i] && stages[i].clearPreviousWeapons) {
       weapons = [];
@@ -144,20 +174,23 @@ function getAvailableWeapons(stageI = 0, blacklist = state.weaponBlacklist, modM
 }
 
 /**
- * Returns the name of the specified stage
- * @param {Number} [stageI] - The stage's index
- * @returns {String} The name of the specified stage
+ * Returns the name of the specified visible-stage
+ * @param {Number} [stageI] - The visible stage's index
+ * @returns {String} The name of the specified visible stage
  */
 function getStageName(stageI = 0) {
-  return data.stages[Math.min(Math.max(stageI, 0), data.stages.length - 1)].name;
+  const stages = getVisibleStages(state.modMode);
+  if (!Array.isArray(stages) || stages.length === 0) return "No Stages";
+  stageI = Math.min(Math.max(stageI, 0), stages.length - 1);
+  return stages[stageI].name;
 }
 
 /**
- * Picks a random weapon that is available at the specified stage with the specified blacklist
+ * Picks a random weapon that is available at the specified visible-stage with the specified blacklist
  * honors state.modMode via getAvailableWeapons default parameter
- * @param {Number} [stageI] - The stage's index
+ * @param {Number} [stageI] - The visible-stage's index
  * @param {Object<String, Boolean>} [blacklist] - The weapons' blacklist
- * @returns {WeaponData} The name of a randomly picked weapon
+ * @returns {WeaponData|undefined} A randomly picked weapon (or undefined if none available)
  */
 function pickRandomWeapon(stageI = 0, blacklist = state.weaponBlacklist) {
   const availWeapons = getAvailableWeapons(stageI, blacklist, state.modMode);
@@ -168,17 +201,18 @@ function pickRandomWeapon(stageI = 0, blacklist = state.weaponBlacklist) {
 }
 
 /**
- * Goes to the next stage
+ * Goes to the next visible stage
  */
 function nextStage() {
-  if (state.currentStage < data.stages.length - 1) {
+  const vis = getVisibleStages(state.modMode);
+  if (state.currentStage < vis.length - 1) {
     ++state.currentStage;
     stateChanged();
   }
 }
 
 /**
- * Goes back to the previous stage
+ * Goes back to the previous visible stage
  */
 function previousStage() {
   if (state.currentStage > 0) {
@@ -231,6 +265,7 @@ function populateWeaponList() {
     const name = weapon.name || "Unknown";
     const div = document.createElement("div");
 
+    // create a DOM-safe id (no spaces or special chars)
     const safeId = `blacklistButton_${name.replace(/[^a-zA-Z0-9_-]/g, '_')}`;
 
     const button = document.createElement("button");
@@ -259,7 +294,11 @@ function populateWeaponList() {
  * Updates all elements on the page with the right information
  */
 function updateElements() {
-  currentStage.update({ CURRENT_STAGE: `${getStageName(state.currentStage)} (${state.currentStage + 1}/${data.stages.length})` });
+  // make sure currentStage is valid for the current mode
+  clampCurrentStage();
+
+  const vis = getVisibleStages(state.modMode);
+  currentStage.update({ CURRENT_STAGE: `${getStageName(state.currentStage)} (${state.currentStage + 1}/${vis.length})` });
   selectedWeapon.update({ CURRENT_WEAPON: createWeaponHTML(state.selectedWeapon) });
   availWeapons.update({ WEAPON_COUNT: getAvailableWeapons(state.currentStage, state.weaponBlacklist, state.modMode).length });
   optWeaponList.update({ ACTION: state.openWeaponList ? "Close" : "Open" });
@@ -325,6 +364,8 @@ function stateLoad(str) {
     stateReset(),
     otherState
   );
+  // clamp currentStage to the currently visible stages
+  clampCurrentStage();
   stateChanged(); // Update datastore I guess???
 }
 
@@ -368,33 +409,60 @@ window.addEventListener("load", async () => {
   optStageClear.element = document.getElementById("optStageClear");
   optModMode.element = document.getElementById("optModMode");
 
-  // load base data
+  // --- Load base data and optional calamity.json, merging with placement rules ---
   const base = await (await fetch("data.json")).json();
 
-  // try to load calamity.json (optional). If present, merge weapons into base stages
+  // try to load calamity.json (optional)
   let calamityData = null;
   try {
-    // attempt to fetch calamity.json
-    calamityData = await (await fetch("calamity.json")).json();
+    const resp = await fetch("calamity.json");
+    if (resp.ok) calamityData = await resp.json();
   } catch (e) {
-    // calamity.json failed to load; continue with vanilla only
     calamityData = null;
   }
 
   if (calamityData && Array.isArray(calamityData.stages)) {
     for (const cStage of calamityData.stages) {
-      const cWeapons = (Array.isArray(cStage.weapons) ? cStage.weapons : []).map(w => Object.assign({}, w, { mod: 'calamity' }));
-      // find matching stage by name in base
-      const idx = base.stages.findIndex(s => s.name === cStage.name);
-      if (idx >= 0) {
-        base.stages[idx].weapons = base.stages[idx].weapons.concat(cWeapons);
-      } else {
-        // add a new stage (Calamity-provided) to the end
-        base.stages.push({
-          name: cStage.name,
-          weapons: cWeapons
-        });
+      // normalize weapons and mark as calamity
+      const cWeapons = (Array.isArray(cStage.weapons) ? cStage.weapons : [])
+        .map(w => Object.assign({}, w, { mod: 'calamity' }));
+
+      // if a stage with same name exists, merge into it
+      const existIdx = base.stages.findIndex(s => s.name === cStage.name);
+      if (existIdx >= 0) {
+        base.stages[existIdx].weapons = (base.stages[existIdx].weapons || []).concat(cWeapons);
+        if (cStage.clearPreviousWeapons) base.stages[existIdx].clearPreviousWeapons = true;
+        continue;
       }
+
+      // determine insertion index for a new calamity-only stage
+      let insertAt = base.stages.length; // default: append
+
+      // numeric position has highest priority (0-based)
+      if (typeof cStage.position === 'number' && Number.isFinite(cStage.position)) {
+        const pos = Math.floor(cStage.position);
+        insertAt = Math.max(0, Math.min(pos, base.stages.length));
+      }
+      // insertAfter stage name
+      else if (typeof cStage.insertAfter === 'string') {
+        const afterIdx = base.stages.findIndex(s => s.name === cStage.insertAfter);
+        if (afterIdx >= 0) insertAt = afterIdx + 1;
+      }
+      // insertBefore stage name
+      else if (typeof cStage.insertBefore === 'string') {
+        const beforeIdx = base.stages.findIndex(s => s.name === cStage.insertBefore);
+        if (beforeIdx >= 0) insertAt = beforeIdx;
+      }
+
+      const newStage = {
+        name: cStage.name,
+        clearPreviousWeapons: !!cStage.clearPreviousWeapons,
+        weapons: cWeapons,
+        // internal flag used to hide this stage in vanilla mode if set in calamity.json
+        _calamityOnly: !!cStage.calamityOnly
+      };
+
+      base.stages.splice(insertAt, 0, newStage);
     }
   }
 

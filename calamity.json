@@ -11,6 +11,17 @@
           "img": "https://calamitymod.wiki.gg/images/Basher.png?c99167"
         }
       ]
+    },
+    {
+      "name": "Pre Desert Scourge",
+      "insertAfter": "King Slime / Any Boss",
+      "calamityOnly": true,
+      "weapons": [
+        {
+          "name": "Wulfrum Screwdriver",
+          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+        }
+      ]
     }
   ]
 }
