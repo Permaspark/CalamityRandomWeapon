@@ -50,6 +50,10 @@
         {
           "name": "Wind Blade",
           "img": "https://calamitymod.wiki.gg/images/c/c4/Wind_Blade.png?6c6935"
+        },
+        {
+          "name": "Vein Burster",
+          "img": "https://calamitymod.wiki.gg/images/1/11/Vein_Burster.png?ec3401"
         }
       ]
     },
@@ -138,8 +142,6 @@
         {
           "name": "Vulcanite Lance",
           "img": "https://calamitymod.wiki.gg/images/Vulcanite_Lance.png?d06edd"
-        },
-        {
         }
       ]
     },
@@ -160,8 +162,8 @@
       "calamityOnly": true,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Virulence",
+          "img": "https://calamitymod.wiki.gg/images/0/00/Virulence.png?c4bebb"
         }
       ]
     },
@@ -250,8 +252,8 @@
       "calamityOnly": true,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Void Edge",
+          "img": "https://calamitymod.wiki.gg/images/Void_Edge.png?84b6d5"
         }
       ]
     },
@@ -294,8 +296,8 @@
       "calamityOnly": true,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Violence",
+          "img": "https://calamitymod.wiki.gg/images/e/e4/Violence.png?5438f6"
         }
       ]
     },
