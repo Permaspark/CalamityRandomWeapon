@@ -1,6 +1,8 @@
 **NOTE**: All images that are shown are taken from [Terraria's Wiki](https://terraria.gamepedia.com/Terraria_Wiki)
 and their license may be different from the one this project is using.
 
+**NOTE**Calamity mod images are taken from [Calamity's Wiki](https://calamitymod.wiki.gg/) and their license may be different from the one this project is using.
+
 Copyright (c) 2020 [DarioDaF & hds536jhmk](https://github.com/DarioDaF/TerrariaRandomWeapon)
 
 Permission is hereby granted, free of charge, to any person
