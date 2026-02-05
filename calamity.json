@@ -15,6 +15,14 @@
           "img": "https://calamitymod.wiki.gg/images/6/61/Yateveo_Bloom.png?f31991"
         },
         {
+          "name": "Burnt Sienna",
+          "img": "https://calamitymod.wiki.gg/images/Burnt_Sienna.png?c1304c"
+        },
+        {
+          "name": "Feller of Evergreens",
+          "img":"https://calamitymod.wiki.gg/images/Feller_of_Evergreens.png?3722c5"
+        },
+        {
           "name": "Wulfrum Screwdriver",
           "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
         }
@@ -37,8 +45,8 @@
       "calamityOnly": true,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Mycelial Claws",
+          "img": "https://calamitymod.wiki.gg/images/Mycelial_Claws.png?9e63a6"
         }
       ]
     },
@@ -54,6 +62,18 @@
         {
           "name": "Vein Burster",
           "img": "https://calamitymod.wiki.gg/images/1/11/Vein_Burster.png?ec3401"
+        },
+        {
+          "name": "Broken Biome Blade",
+          "img": "https://calamitymod.wiki.gg/images/Broken_Biome_Blade.png?539d25"
+        },
+        {
+          "name": "Gauss Dagger",
+          "img": "https://calamitymod.wiki.gg/images/Gauss_Dagger.png?fbaf18"
+        },
+        {
+          "name": "Perfect Dark",
+          "img": "https://calamitymod.wiki.gg/images/Perfect_Dark.png?f8e6aa"
         }
       ]
     },
@@ -63,8 +83,8 @@
       "calamityOnly": true,
       "weapons": [
         {
-          "name": "Wulfrum Screwdriver",
-          "img": "https://calamitymod.wiki.gg/images/Wulfrum_Screwdriver.png?5deb5c"
+          "name": "Gelitic Blade",
+          "img": "https://calamitymod.wiki.gg/images/Gelitic_Blade.png?c6ad8e"
         }
       ]
     },
